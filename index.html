@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>موقعي الإخباري</title>
+<style>
+body {
+    font-family: Arial;
+    direction: rtl;
+    background: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+h1 {
+    text-align: center;
+}
+.news {
+    background: white;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+.news img {
+    width: 100%;
+    border-radius: 10px;
+}
+.news a {
+    text-decoration: none;
+    color: black;
+}
+</style>
+</head>
+<body>
+
+<h1>آخر الأخبار 📰</h1>
+<div id="news-container"></div>
+
+<script>
+const apiKey = "YOUR_API_KEY"; // حط مفتاحك هنا
+const url = `https://newsapi.org/v2/top-headlines?country=ae&apiKey=${apiKey}`;
+
+fetch(url)
+.then(response => response.json())
+.then(data => {
+    const container = document.getElementById("news-container");
+    
+    data.articles.forEach(article => {
+        const newsDiv = document.createElement("div");
+        newsDiv.className = "news";
+
+        newsDiv.innerHTML = `
+            <a href="${article.url}" target="_blank">
+                <h3>${article.title}</h3>
+                ${article.urlToImage ? `<img src="${article.urlToImage}">` : ""}
+                <p>${article.description || ""}</p>
+            </a>
+        `;
+
+        container.appendChild(newsDiv);
+    });
+})
+.catch(error => {
+    console.log("حدث خطأ:", error);
+});
+</script>
+
+</body>
+</html>
